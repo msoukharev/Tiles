@@ -1,10 +1,11 @@
 local mod = { "cmd", "alt", "ctrl" }
+local shiftMod = { "cmd", "alt", "ctrl", "shift"}
 
 local obj = {}
 
 obj.__index = obj
 
-obj.name = "Tiler"
+obj.name = "Tiles"
 obj.version = "0.3.0"
 obj.author = "Maxim Soukharev <maxim.soukharev@gmail.com>"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
@@ -27,9 +28,9 @@ end
 
 local function getSizeBreakpoints(aspectRatio)
     if isWide(aspectRatio) then
-        return { 0.25, 0.33, 0.50, 0.66, 0.75, 1 }
+        return { 0.25, 0.333, 0.50, 0.666, 0.75, 1 }
     else
-        return { 0.33, 0.5, 0.66, 1 }
+        return { 0.333, 0.5, 0.666, 1 }
     end
 end
 
@@ -76,11 +77,33 @@ local function resize(direction)
     win:move(winUnitRect)
 end
 
+local function setWindowPosition(direction, screen, win)
+    local screenFrame = screen:frame()
+    local winFrameUnit = win:frame():toUnitRect(screenFrame)
+    local newX
+    if direction == "Left" then
+        newX = math.max(0, winFrameUnit.x - winFrameUnit.w)
+    elseif direction == "Right" then
+        newX = math.min(1 - winFrameUnit.w, winFrameUnit.x + winFrameUnit.w)
+    end
+    winFrameUnit.x = newX
+    win:move(winFrameUnit)
+end
+
+local function move(direction)
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    setWindowPosition(direction, screen, win)
+end
+
 local directions = { "Left", "Right" }
 
 for _, direct in ipairs(directions) do
     hs.hotkey.bind(mod, direct, function ()
         resize(direct)
+    end)
+    hs.hotkey.bind(shiftMod, direct, function ()
+        move(direct)
     end)
 end
 
