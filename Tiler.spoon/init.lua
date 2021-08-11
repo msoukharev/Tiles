@@ -27,6 +27,11 @@ local mapX = {
     ['6'] = 0.666
 }
 
+local mapY = {
+    [']'] = 0.5,
+    ['='] = 0.0,
+}
+
 local wideMapW = {
     ['2'] = 0.25,
     ['3'] = 0.333,
@@ -43,6 +48,11 @@ local mapW = {
     ['0'] = 1
 }
 
+local mapH = {
+    ['='] = 0.5,
+    [']'] = 1
+}
+
 local function isWide(screen)
     local frame = screen:frame()
     local aspectRatio = frame.w / frame.h
@@ -53,7 +63,7 @@ local function isWide(screen)
     end
 end
 
-local function getPosBreakpointFromKey(key, screen)
+local function getBreakpointX(key, screen)
     if isWide(screen) then
         return wideMapX[key]
     else
@@ -61,7 +71,11 @@ local function getPosBreakpointFromKey(key, screen)
     end
 end
 
-local function getWindowSizeFromKey(key, screen)
+local function getBreakpointY(key, screen)
+    return mapY[key]
+end
+
+local function getBreakpointW(key, screen)
     if isWide(screen) then
         return wideMapW[key]
     else
@@ -69,50 +83,66 @@ local function getWindowSizeFromKey(key, screen)
     end
 end
 
+local function getBreakpointH(key, screen)
+    return mapH[key]
+end
 
-local function setWindowSize(win, screen, w)
+local function getFocusedWindowWithScreen()
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    return win, screen
+end
+
+
+local function setWindowSize(win, screen, w, h)
     local screenFrame = screen:frame()
     local winFrameUnit = win:frame():toUnitRect(screenFrame)
-    winFrameUnit.w = w
+    winFrameUnit.w = w or winFrameUnit.w
+    winFrameUnit.h = h or winFrameUnit.h
     win:move(winFrameUnit)
 end
 
-local function setWindowPosition(win, screen, x)
+local function setWindowPosition(win, screen, x, y)
     local screenFrame = screen:frame()
     local winFrameUnit = win:frame():toUnitRect(screenFrame)
-    winFrameUnit.x = x
+    winFrameUnit.x = x or winFrameUnit.x
+    winFrameUnit.y = y or winFrameUnit.y
     win:move(winFrameUnit)
 end
-
-local function moveWindow(key)
-    local win = hs.window.focusedWindow()
-    local screen = win:screen()
-    local x = getPosBreakpointFromKey(key, screen)
-    if x ~= nil then
-        setWindowPosition(win, screen, x)
-    end
-end
-
-local function resizeWindow(key)
-    local win = hs.window.focusedWindow()
-    local screen = win:screen()
-    local w = getWindowSizeFromKey(key, screen)
-    if w ~= nil then
-        setWindowSize(win, screen, w)
-    end
-end
-
 
 for key, _ in pairs(wideMapX) do
     hs.hotkey.bind(mod, key, function ()
-        moveWindow(key)
+        local win, screen = getFocusedWindowWithScreen()
+        local x = getBreakpointX(key, screen)
+        if x ~= nil then
+            setWindowPosition(win, screen, x, nil)
+        end
+    end)
+end
+
+for key, _ in pairs(mapY) do
+    hs.hotkey.bind(mod, key, function ()
+        local win, screen = getFocusedWindowWithScreen()
+        local y = getBreakpointY(key, screen)
+        setWindowPosition(win, screen, nil, y)
     end)
 end
 
 for key, _ in pairs(wideMapW) do
     hs.hotkey.bind(shiftMod, key, function ()
-        resizeWindow(key)
+        local win, screen = getFocusedWindowWithScreen()
+        local w = getBreakpointW(key, screen)
+        setWindowSize(win, screen, w, nil)
     end)
 end
+
+for key, _ in pairs(mapH) do
+    hs.hotkey.bind(shiftMod, key, function ()
+        local win, screen = getFocusedWindowWithScreen()
+        local h = getBreakpointH(key, screen)
+        setWindowSize(win, screen, nil, h)
+    end)
+end
+
 
 return obj
