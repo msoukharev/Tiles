@@ -31,19 +31,19 @@ Move focused window by holding `ctrl option cmd` and pressing the breakpoint `ke
 
 | Key | Window X offset |
 | ---- | -------- |
-| 3 | 1/3 screen |
-| 5 | 1/2 screen |
-| 6 | 2/3 screen |
+| T | 1/3 screen |
+| H | 1/2 screen |
+| 2 | 2/3 screen |
 
 **Wide**
 
 | Key | Window X offset |
 | ---- | -------- |
-| 2 | 1/4 screen |
-| 3 | 1/3 screen |
-| 5 | 1/2 screen |
-| 6 | 2/3 screen |
-| 7 | 3/4 screen |
+| Q | 1/4 screen |
+| T | 1/3 screen |
+| H | 1/2 screen |
+| 2 | 2/3 screen |
+| 3 | 3/4 screen |
 
 
 ### Resize Window
@@ -54,18 +54,18 @@ Resize focused window by holding `ctrl option cmd shift` and pressing the breakp
 
 | Key | Window Width |
 | ---- | -------- |
-| 3 | 1/3 screen |
-| 5 | 1/2 screen |
-| 6 | 2/3 screen |
+| T | 1/3 screen |
+| H | 1/2 screen |
+| 2 | 2/3 screen |
 | 0 | Full screen (window) |
 
 **Wide**
 
 | Key | Window Width |
 | ---- | -------- |
-| 2 | 1/4 screen |
-| 3 | 1/3 screen |
-| 5 | 1/2 screen |
-| 6 | 2/3 screen |
-| 7 | 3/4 screen |
+| Q | 1/4 screen |
+| T | 1/3 screen |
+| H | 1/2 screen |
+| 2 | 2/3 screen |
+| 3 | 3/4 screen |
 | 0 | Full screen (window) |
