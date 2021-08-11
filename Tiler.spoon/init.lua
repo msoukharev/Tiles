@@ -6,19 +6,46 @@ local obj = {}
 obj.__index = obj
 
 obj.name = "Tiles"
-obj.version = "0.3.0"
+obj.version = "0.4.0"
 obj.author = "Maxim Soukharev <maxim.soukharev@gmail.com>"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 
-local function getRatio(width, height, inverse)
-    local inverse = inverse or false
-    local r = width / height
-    r = inverse and 1 / r or r
-    return r
-end
+local wideMapX = {
+    ['1'] = 0,
+    ['2'] = 0.25,
+    ['3'] = 0.333,
+    ['5'] = 0.50,
+    ['6'] = 0.666,
+    ['7'] = 0.75
+}
 
-local function isWide(aspectRatio)
+local mapX = {
+    ['1'] = 0,
+    ['3'] = 0.333,
+    ['5'] = 0.50,
+    ['6'] = 0.666
+}
+
+local wideMapW = {
+    ['2'] = 0.25,
+    ['3'] = 0.333,
+    ['5'] = 0.5,
+    ['6'] = 0.666,
+    ['7'] = 0.75,
+    ['0'] = 1
+}
+
+local mapW = {
+    ['3'] = 0.333,
+    ['5'] = 0.5,
+    ['6'] = 0.666,
+    ['0'] = 1
+}
+
+local function isWide(screen)
+    local frame = screen:frame()
+    local aspectRatio = frame.w / frame.h
     if aspectRatio >= 2.3333 then
         return true
     else
@@ -26,84 +53,67 @@ local function isWide(aspectRatio)
     end
 end
 
-local function getSizeBreakpoints(aspectRatio)
-    if isWide(aspectRatio) then
-        return { 0.25, 0.333, 0.50, 0.666, 0.75, 1 }
+local function getPosBreakpointFromKey(key, screen)
+    if isWide(screen) then
+        return wideMapX[key]
     else
-        return { 0.333, 0.5, 0.666, 1 }
+        return mapX[key]
     end
 end
 
-local function findNextUp(val, breakPoints)
-    local nxt = val
-    for _, n in ipairs(breakPoints) do
-        if n > nxt + 0.01 then
-            nxt = n
-            break
-        end
+local function getWindowSizeFromKey(key, screen)
+    if isWide(screen) then
+        return wideMapW[key]
+    else
+        return mapW[key]
     end
-    return nxt
 end
 
-local function findNextDown(val, breakPoints)
-    local nxt = val
-    for _, n in ipairs(breakPoints) do
-        if n < val - 0.01 then
-            nxt = n
-        else
-            break
-        end
-    end
-    return nxt
-end
 
-local function resize(direction)
-    local win = hs.window.focusedWindow()
-    local wRect = win:frame()
-    local sRect = win:screen():frame()
-
-    local winWidthRatio = getRatio(wRect.w, sRect.w)
-    local scrAsp = getRatio(sRect.w, sRect.h)
-
-    local breaks = getSizeBreakpoints(scrAsp)
-    local newRatio
-    if direction == "Left" then
-        newRatio = findNextDown(winWidthRatio, breaks)
-    elseif direction == "Right" then
-        newRatio = findNextUp(winWidthRatio, breaks)
-    end
-    local winUnitRect = wRect:toUnitRect(sRect)
-    winUnitRect.w = newRatio
-    win:move(winUnitRect)
-end
-
-local function setWindowPosition(direction, screen, win)
+local function setWindowSize(win, screen, w)
     local screenFrame = screen:frame()
     local winFrameUnit = win:frame():toUnitRect(screenFrame)
-    local newX
-    if direction == "Left" then
-        newX = math.max(0, winFrameUnit.x - winFrameUnit.w)
-    elseif direction == "Right" then
-        newX = math.min(1 - winFrameUnit.w, winFrameUnit.x + winFrameUnit.w)
-    end
-    winFrameUnit.x = newX
+    winFrameUnit.w = w
     win:move(winFrameUnit)
 end
 
-local function move(direction)
-    local win = hs.window.focusedWindow()
-    local screen = win:screen()
-    setWindowPosition(direction, screen, win)
+local function setWindowPosition(win, screen, x)
+    local screenFrame = screen:frame()
+    local winFrameUnit = win:frame():toUnitRect(screenFrame)
+    winFrameUnit.x = x
+    win:move(winFrameUnit)
 end
 
-local directions = { "Left", "Right" }
+local function moveWindow(key)
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local x = getPosBreakpointFromKey(key, screen)
+    print(x)
+    if x ~= nil then
+        setWindowPosition(win, screen, x)
+    end
+end
 
-for _, direct in ipairs(directions) do
-    hs.hotkey.bind(mod, direct, function ()
-        resize(direct)
+local function resizeWindow(key)
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local w = getWindowSizeFromKey(key, screen)
+    print(w)
+    if w ~= nil then
+        setWindowSize(win, screen, w)
+    end
+end
+
+
+for key, _ in pairs(wideMapX) do
+    hs.hotkey.bind(mod, key, function ()
+        moveWindow(key)
     end)
-    hs.hotkey.bind(shiftMod, direct, function ()
-        move(direct)
+end
+
+for key, _ in pairs(wideMapW) do
+    hs.hotkey.bind(shiftMod, key, function ()
+        resizeWindow(key)
     end)
 end
 
