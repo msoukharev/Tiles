@@ -88,7 +88,6 @@ local function moveWindow(key)
     local win = hs.window.focusedWindow()
     local screen = win:screen()
     local x = getPosBreakpointFromKey(key, screen)
-    print(x)
     if x ~= nil then
         setWindowPosition(win, screen, x)
     end
@@ -98,7 +97,6 @@ local function resizeWindow(key)
     local win = hs.window.focusedWindow()
     local screen = win:screen()
     local w = getWindowSizeFromKey(key, screen)
-    print(w)
     if w ~= nil then
         setWindowSize(win, screen, w)
     end
