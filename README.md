@@ -20,52 +20,11 @@ Reload your hammerspoon config and you're ready to go 😎
 
 ## How to Use
 
-You can move or resize focused window using breakpoints that are calculated based on the aspect ratio of the screen.
+You can activate command keys by holding `ctrl opt cmd`. The command keys allow you to select desirable window configuration.
 
-### Move Window
-
-Move focused window by holding `ctrl option cmd` and pressing the breakpoint `key`
-
-
-**Regular**
-
-| Key | Window X offset |
-| ---- | -------- |
-| T | 1/3 screen |
-| H | 1/2 screen |
-| 2 | 2/3 screen |
-
-**Wide**
-
-| Key | Window X offset |
-| ---- | -------- |
-| Q | 1/4 screen |
-| T | 1/3 screen |
-| H | 1/2 screen |
-| 2 | 2/3 screen |
-| 3 | 3/4 screen |
-
-
-### Resize Window
-
-Resize focused window by holding `ctrl option cmd shift` and pressing the breakpoint `key`
-
-**Regular**
-
-| Key | Window Width |
-| ---- | -------- |
-| T | 1/3 screen |
-| H | 1/2 screen |
-| 2 | 2/3 screen |
-| 0 | Full screen (window) |
-
-**Wide**
-
-| Key | Window Width |
-| ---- | -------- |
-| Q | 1/4 screen |
-| T | 1/3 screen |
-| H | 1/2 screen |
-| 2 | 2/3 screen |
-| 3 | 3/4 screen |
-| 0 | Full screen (window) |
+| Key | Command |
+| --- | --- |
+| `0` | Window size on long axis |
+| `-` | Window position |
+| `=` | Window size and position on short axis |
+| `/` | Combined: Window size, position on long axis, window size and position along the short axis |
