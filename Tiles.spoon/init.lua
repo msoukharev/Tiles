@@ -4,7 +4,7 @@ local obj = {}
 
 obj.__index = obj
 obj.name = "Tiles"
-obj.version = "0.8.1"
+obj.version = "0.8.2"
 obj.author = "Maxim Soukharev"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
@@ -111,6 +111,20 @@ local normalAspect = {
             urects = { windowConfigs.normal.rightThird }
         }
     },
+    [2] = {
+        {
+            text = 'left - right half',
+            urects = { windowConfigs.normal.leftHalf, windowConfigs.normal.rightHalf }
+        },
+        {
+            text = 'left corners',
+            urects = { windowConfigs.normal.upperLeft, windowConfigs.normal.lowerLeft }
+        },
+        {
+            text = 'right corners',
+            urects = { windowConfigs.normal.upperRight, windowConfigs.normal.lowerRight }
+        },
+    }
 }
 
 local _2xApect = {
@@ -159,6 +173,20 @@ local _2xApect = {
             text = symbols._2x.rightThird .. ' right third',
             urects = { windowConfigs._2x.rightThird }
         }
+    },
+    [2] = {
+        {
+            text = 'left - right half',
+            urects = { windowConfigs._2x.leftHalf, windowConfigs._2x.rightHalf }
+        },
+        {
+            text = 'left corners',
+            urects = { windowConfigs._2x.upperLeft, windowConfigs._2x.lowerLeft }
+        },
+        {
+            text = 'right corners',
+            urects = { windowConfigs._2x.upperRight, windowConfigs._2x.lowerRight }
+        },
     }
 }
 
@@ -182,17 +210,27 @@ local function getLastFocusedWindows(size)
     end
 end
 
-local chooser = hs.chooser.new(function (choice)
-    if choice then
-        local windows = getLastFocusedWindows()
-        for i = 1, #windows do
-            windows[i]:move(choice.urects[i])
+local function getChooser(scope)
+    return hs.chooser.new(function (choice)
+        if choice then
+            local windows = getLastFocusedWindows(scope)
+            for i = 1, #windows do
+                windows[i]:move(choice.urects[i])
+            end
         end
-    end
-end):width(14):placeholderText('Tile')
+    end):width(14):placeholderText('Tile')
+end
 
 hs.hotkey.bind(mod, 'w', function ()
     local choices = getSpecForAspect(1)
+    local chooser = getChooser(1)
+    chooser:choices(choices)
+    chooser:show()
+end)
+
+hs.hotkey.bind(mod, 'e', function()
+    local choices = getSpecForAspect(2)
+    local chooser = getChooser(2)
     chooser:choices(choices)
     chooser:show()
 end)
