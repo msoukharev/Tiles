@@ -29,6 +29,8 @@ local windowConfigs = {
         leftThird = { 0, 0, 0.3333, 1 },
         centerThird = { 0.3333, 0, 0.3333, 1 },
         rightThird = { 0.6666, 0, 0.3333, 1 },
+        left2Thirds = { 0, 0, 0.6666, 1 },
+        right2Thirds = { 0.3333, 0, 0.6666, 1 },
     },
     _2x = {
         upperLeft = { 0, 0, 0.3333, 0.5 },
@@ -41,8 +43,10 @@ local windowConfigs = {
         rightHalf = { 0.5, 0, 0.5, 1 },
         leftThird = { 0, 0, 0.3333, 1 },
         centerThird = { 0.3333, 0, 0.3333, 1 },
-        rightThird = { 0.6666, 0, 0.3333,1 }
-    }
+        rightThird = { 0.6666, 0, 0.3333,1 },
+        left2Thirds = { 0, 0, 0.6666, 1 },
+        right2Thirds = { 0.3333, 0, 0.6666, 1 },
+    },
 }
 
 local symbols = {
@@ -69,7 +73,7 @@ local symbols = {
         leftThird = '[=  ]',
         centerThird = '[ = ]',
         rightThird = '[  =]'
-    }
+    },
 }
 
 local normalAspect = {
@@ -109,7 +113,7 @@ local normalAspect = {
         {
             text = symbols.normal.rightThird .. ' right third',
             urects = { windowConfigs.normal.rightThird }
-        }
+        },
     },
     [2] = {
         {
@@ -123,6 +127,14 @@ local normalAspect = {
         {
             text = 'right corners',
             urects = { windowConfigs.normal.upperRight, windowConfigs.normal.lowerRight }
+        },
+        {
+            text = 'third - two thirds',
+            urects = { windowConfigs.normal.leftThird, windowConfigs.normal.right2Thirds }
+        },
+        {
+            text = 'two thirds - third',
+            urects = { windowConfigs.normal.left2Thirds, windowConfigs.normal.rightThird }
         },
     }
 }
@@ -172,7 +184,7 @@ local _2xApect = {
         {
             text = symbols._2x.rightThird .. ' right third',
             urects = { windowConfigs._2x.rightThird }
-        }
+        },
     },
     [2] = {
         {
@@ -186,6 +198,14 @@ local _2xApect = {
         {
             text = 'right corners',
             urects = { windowConfigs._2x.upperRight, windowConfigs._2x.lowerRight }
+        },
+        {
+            text = 'third - two thirds',
+            urects = { windowConfigs._2x.leftThird, windowConfigs._2x.right2Thirds }
+        },
+        {
+            text = 'two thirds - third',
+            urects = { windowConfigs._2x.left2Thirds, windowConfigs._2x.rightThird }
         },
     }
 }
