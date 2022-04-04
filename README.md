@@ -20,6 +20,12 @@ Reload your hammerspoon config and you're ready to go 😎
 
 ## How to Use
 
-Hold `ctrl opt cmd`, press `w` then choose the window position. Last focused window will be resized.
+Hold `ctrl opt cmd`, press `{key}` then choose the window position. *N* last focused windows will be resized and moved depending on the selected option.
+
+| Key | Number of windows |
+|:--------:|:--------------------:|
+| w   | 1 |
+| e   | 2 |
+| q (wide) | 3 |
 
 ![popup example](./media/tile_window.png)

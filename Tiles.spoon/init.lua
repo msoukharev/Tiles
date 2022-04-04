@@ -4,7 +4,7 @@ local obj = {}
 
 obj.__index = obj
 obj.name = "Tiles"
-obj.version = "0.8.2"
+obj.version = "0.8.4"
 obj.author = "Maxim Soukharev"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
@@ -46,6 +46,9 @@ local windowConfigs = {
         rightThird = { 0.6666, 0, 0.3333,1 },
         left2Thirds = { 0, 0, 0.6666, 1 },
         right2Thirds = { 0.3333, 0, 0.6666, 1 },
+        firstQuarter = { 0, 0, 0.25, 1 },
+        lastQuarter = { 0.75, 0, 0.25, 1 },
+        mid50 = { 0.25, 0, 0.5, 1 },
     },
 }
 
@@ -136,6 +139,10 @@ local normalAspect = {
             text = 'two thirds - third',
             urects = { windowConfigs.normal.left2Thirds, windowConfigs.normal.rightThird }
         },
+    },
+    [3] = {
+        text = '3 thirds',
+        urects = { windowConfigs.normal.leftThird, windowConfigs.normal.centerThird, windowConfigs.normal.rightThird }
     }
 }
 
@@ -207,6 +214,16 @@ local _2xApect = {
             text = 'two thirds - third',
             urects = { windowConfigs._2x.left2Thirds, windowConfigs._2x.rightThird }
         },
+    },
+    [3] = {
+        {
+            text = '25 50 25',
+            urects = { windowConfigs._2x.firstQuarter, windowConfigs._2x.mid50, windowConfigs._2x.lastQuarter }
+        },
+        {
+            text = '3 thirds',
+            urects = { windowConfigs._2x.leftThird, windowConfigs._2x.centerThird, windowConfigs._2x.rightThird }
+        }
     }
 }
 
@@ -241,18 +258,17 @@ local function getChooser(scope)
     end):width(14):placeholderText('Tile')
 end
 
-hs.hotkey.bind(mod, 'w', function ()
-    local choices = getSpecForAspect(1)
-    local chooser = getChooser(1)
-    chooser:choices(choices)
-    chooser:show()
-end)
-
-hs.hotkey.bind(mod, 'e', function()
-    local choices = getSpecForAspect(2)
-    local chooser = getChooser(2)
-    chooser:choices(choices)
-    chooser:show()
+hs.fnutils.each({
+    { key = 'w', n = 1 },
+    { key = 'e', n = 2 },
+    { key = 'q', n = 3 }
+}, function(option)
+    hs.hotkey.bind(mod, option.key, function()
+        local choices = getSpecForAspect(option.n)
+        local chooser = getChooser(option.n)
+        chooser:choices(choices)
+        chooser:show()
+    end)
 end)
 
 return obj
