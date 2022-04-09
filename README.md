@@ -18,6 +18,10 @@ hs.loadSpoon('Tiles')
 
 Reload your hammerspoon config and you're ready to go 😎
 
+## Dev workflow
+
+For dev workflow, it is recommended that you symlink `Tiles.spoon` to `${HOME}/.hammerspoon/Spoons/Tiles.spoon` and import it in your `init.lua` file. Branch out, make changes to the the source code while reloading Hammerspoon. Push and open a PR.
+
 ## How to Use
 
 Hold `ctrl opt cmd`, press `{key}` then choose the window position. *N* last focused windows will be resized and moved depending on the selected option.
